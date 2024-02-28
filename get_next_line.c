@@ -14,22 +14,26 @@ static int	ft_check_line(char *check_line)
 	return (0);
 }
 
-static char	*ft_read_file(int fd, char *check_line)
+static char	*ft_read_file(int fd, char *hold_line)
 {
-	
-	read(fd, check_line, BUFFER_SIZE);
-	if (ft_check_line(check_line) == 1)
-		return ("\n");
-	printf("%s", check_line);
-	return (check_line);
+	char	*buf;
+
+	buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE));
+	if (buf == NULL)
+		return (NULL);
+	read(fd, buf, BUFFER_SIZE);
+	if (ft_check_line(buf) == 1)
+	{
+		hold_line = ft_strjoin(hold_line, buf);
+		return (hold_line);
+	}
+	return (hold_line);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*check_line;
+	static char	*hold_line;
 
-	check_line = (char *)malloc(sizeof(char) * (BUFFER_SIZE));
-	if (check_line == NULL)
-		return (NULL);
-	ft_read_file(fd, check_line);
+	hold_line = NULL;
+	return (ft_read_file(fd, hold_line));
 }
