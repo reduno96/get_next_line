@@ -1,25 +1,47 @@
+
 #include "get_next_line.h"
 
-char	*ft_check_line(char *check_line)
+void	*ft_calloc(size_t size)
+{
+	size_t	i;
+	char	*src;
+
+	i = 0;
+	src = malloc(size);
+	if (src == NULL)
+		return (0);
+	while (i < size)
+	{
+		src[i] = '\0';
+		i++;
+	}
+	return (src);
+}
+
+int	ft_check(char *line_check)
 {
 	int	i;
 
 	i = 0;
-	if (check_line == NULL)
-		return (NULL);
-	while (check_line[i] != '\0')
+	if (line_check == NULL || line_check[0] == '\0')
+		return (0);
+	while (line_check[i])
 	{
-		if (check_line[i] == 'j')
-			return (check_line + i);
+		if (line_check[i] == '\n')
+			return (1);
 		i++;
 	}
-	return (check_line + i);
+	return (0);
 }
-int	ft_read_line(int fd, char *buf)
+
+int	ft_read_buffer(int fd, char *buf)
 {
 	int	result_read;
 
+	if (buf == NULL)
+		return (0);
 	result_read = read(fd, buf, BUFFER_SIZE);
+	// printf("'%s'", buf);
 	if (result_read == -1)
 	{
 		free(buf);
@@ -27,29 +49,51 @@ int	ft_read_line(int fd, char *buf)
 	}
 	return (result_read);
 }
-char	*ft_read_file(int fd, char *hold_line)
+char	*ft_hold_line(char *hold_line)
 {
-	char	*buf;
+	int		i;
+	int		j;
+	char	*final_line;
 
-	buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	if (buf == NULL)
+	i = 0;
+	j = 0;
+	if (hold_line == NULL)
 		return (NULL);
-	while (ft_check_line(hold_line) == NULL && ft_read_line >= 0)
-	{
-		ft_read_line(fd, buf);
-		hold_line = ft_strjoin(hold_line, buf);
-	}
-	return (hold_line);
+	while (hold_line[i] && hold_line[i] != '\n')
+		i++;
+	final_line = ft_calloc(i + 2);
+	i = 0;
+	while (hold_line[i] && hold_line[i] != '\n')
+		final_line[j++] = hold_line[i++];
+	if (hold_line[i] == '\n')
+		final_line[j++] = hold_line[i];
+	final_line[j] = '\0';
+	// free(hold_line);
+	return (final_line);
 }
+
+
 
 char	*get_next_line(int fd)
 {
-	static char	*hold_line;
-	char		*new_line;
+	static char	*final_line;
+	static char		*hold_line;
+	char		*buf;
+	char		*check_hold_line;
 
-	hold_line = NULL;
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	new_line = ft_check_line(ft_read_file(fd, hold_line));
-	return (new_line);
+	hold_line = NULL;
+	while (ft_check(hold_line) == 0)
+	{
+		buf = ft_calloc(BUFFER_SIZE + 1);
+		if (ft_read_buffer(fd, buf) <= 0)
+			break ;
+		hold_line = ft_strjoin(hold_line, buf);
+		free(buf);
+	}
+	
+	check_hold_line = ft_hold_line(hold_line);
+	// hold_line = new_line(hold_line);
+	return (check_hold_line);
 }
