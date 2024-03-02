@@ -68,22 +68,40 @@ char	*ft_hold_line(char *hold_line)
 	if (hold_line[i] == '\n')
 		final_line[j++] = hold_line[i];
 	final_line[j] = '\0';
-	// free(hold_line);
 	return (final_line);
 }
 
+char	*new_line(char *line)
+{
+	int		i;
+	int		j;
+	char	*str;
 
+	i = 0;
+	while (line[i] && line[i] != '\n')
+		i++;
+	if (!line[i])
+		return (free(line), NULL);
+	str = ft_calloc((ft_strlen(line) - i + 1));
+	if (!str)
+		return (free(str), NULL);
+	i++;
+	j = 0;
+	while (line[i])
+		str[j++] = line[i++];
+	str[j] = '\0';
+	free(line);
+	return (str);
+}
 
 char	*get_next_line(int fd)
 {
-	static char	*final_line;
-	static char		*hold_line;
+	static char	*hold_line;
 	char		*buf;
 	char		*check_hold_line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	hold_line = NULL;
 	while (ft_check(hold_line) == 0)
 	{
 		buf = ft_calloc(BUFFER_SIZE + 1);
@@ -92,8 +110,7 @@ char	*get_next_line(int fd)
 		hold_line = ft_strjoin(hold_line, buf);
 		free(buf);
 	}
-	
 	check_hold_line = ft_hold_line(hold_line);
-	// hold_line = new_line(hold_line);
+	hold_line = new_line(hold_line);
 	return (check_hold_line);
 }
