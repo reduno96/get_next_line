@@ -34,21 +34,6 @@ int	ft_check(char *line_check)
 	return (0);
 }
 
-int	ft_read_buffer(int fd, char *buf)
-{
-	int	result_read;
-
-	if (buf == NULL)
-		return (0);
-	result_read = read(fd, buf, BUFFER_SIZE);
-	// printf("'%s'", buf);
-	if (result_read == -1)
-	{
-		free(buf);
-		return (0);
-	}
-	return (result_read);
-}
 char	*ft_hold_line(char *hold_line)
 {
 	int		i;
@@ -99,14 +84,22 @@ char	*get_next_line(int fd)
 	static char	*hold_line;
 	char		*buf;
 	char		*check_hold_line;
+	int			result_read;
+
+	result_read = 1;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	while (ft_check(hold_line) == 0)
+
+	while (ft_check(hold_line) == 0 && result_read > 0)
 	{
+		printf("%d", result_read);
+
 		buf = ft_calloc(BUFFER_SIZE + 1);
-		if (ft_read_buffer(fd, buf) <= 0)
-			break ;
+		result_read = read(fd, buf, BUFFER_SIZE);
+		if (result_read < 0)
+			return (free(buf), buf = NULL, NULL);
+
 		hold_line = ft_strjoin(hold_line, buf);
 		free(buf);
 	}
