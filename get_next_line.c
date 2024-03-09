@@ -6,7 +6,7 @@
 /*   By: rel-mora <reduno96@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 16:17:57 by rel-mora          #+#    #+#             */
-/*   Updated: 2024/03/09 12:56:44 by rel-mora         ###   ########.fr       */
+/*   Updated: 2024/03/09 17:17:26 by rel-mora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,26 +36,26 @@ char	*ft_hold_line(char *hold_line)
 	return (final_line);
 }
 
-char	*after_line(char *line)
+char	*ft_rest_buf(char *hold_line)
 {
 	int		i;
 	int		j;
 	char	*str;
 
 	i = 0;
-	while (line[i] && line[i] != '\n')
+	while (hold_line[i] && hold_line[i] != '\n')
 		i++;
-	if (!line[i])
-		return (free(line), NULL);
-	str = ft_calloc((ft_strlen(line) - i + 1));
+	if (!hold_line[i])
+		return (free(hold_line), NULL);
+	str = ft_calloc((ft_strlen(hold_line) - i + 1));
 	if (!str)
 		return (free(str), NULL);
 	i++;
 	j = 0;
-	while (line[i])
-		str[j++] = line[i++];
+	while (hold_line[i])
+		str[j++] = hold_line[i++];
 	str[j] = '\0';
-	free(line);
+	free(hold_line);
 	return (str);
 }
 
@@ -92,6 +92,6 @@ char	*get_next_line(int fd)
 	}
 	free(buf);
 	final_line = ft_hold_line(hold_line);
-	hold_line = after_line(hold_line);
+	hold_line = ft_rest_buf(hold_line);
 	return (final_line);
 }
