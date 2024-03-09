@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rel-mora <reduno96@gmail.com>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/08 16:20:24 by rel-mora          #+#    #+#             */
+/*   Updated: 2024/03/09 12:56:58 by rel-mora         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line.h"
 
 size_t	ft_strlen(char *str)
@@ -8,6 +20,39 @@ size_t	ft_strlen(char *str)
 	while (str[i])
 		i++;
 	return (i++);
+}
+
+void	*ft_calloc(size_t size)
+{
+	size_t	i;
+	char	*src;
+
+	i = 0;
+	src = malloc(size);
+	if (src == NULL)
+		return (free(src), src = NULL, NULL);
+	while (i < size)
+	{
+		src[i] = '\0';
+		i++;
+	}
+	return (src);
+}
+
+int	ft_check(char *line_check)
+{
+	int	i;
+
+	i = 0;
+	if (line_check == NULL || line_check[0] == '\0')
+		return (0);
+	while (line_check[i])
+	{
+		if (line_check[i] == '\n')
+			return (1);
+		i++;
+	}
+	return (0);
 }
 
 char	*ft_strjoin(char *s1, char *s2)
@@ -35,6 +80,5 @@ char	*ft_strjoin(char *s1, char *s2)
 		str_final[i++] = s2[j++];
 	str_final[i] = '\0';
 	free(s1);
-	// free(s2);
 	return (str_final);
 }
