@@ -76,5 +76,10 @@
       "icon": "terminal-powershell"
     }
   },
-  "terminal.integrated.defaultProfile.linux": "bash"
+  "terminal.integrated.defaultProfile.linux": "bash",
+  "files.associations": {
+    "limits.h": "c",
+    "file_utils.h": "c",
+    "utils.h": "c"
+  }
 }
