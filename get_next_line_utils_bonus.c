@@ -6,11 +6,11 @@
 /*   By: rel-mora <reduno96@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 16:20:24 by rel-mora          #+#    #+#             */
-/*   Updated: 2024/03/09 13:01:19 by rel-mora         ###   ########.fr       */
+/*   Updated: 2024/03/09 17:23:10 by rel-mora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 size_t	ft_strlen(char *str)
 {
