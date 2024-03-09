@@ -1,54 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rel-mora <reduno96@gmail.com>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/08 16:17:57 by rel-mora          #+#    #+#             */
+/*   Updated: 2024/03/09 12:56:44 by rel-mora         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "get_next_line.h"
 
-void	*ft_calloc(size_t size)
-{
-	size_t	i;
-	char	*src;
-
-	i = 0;
-	src = malloc(size);
-	if (src == NULL)
-		return (0);
-	while (i < size)
-	{
-		src[i] = '\0';
-		i++;
-	}
-	return (src);
-}
-
-int	ft_check(char *line_check)
-{
-	int	i;
-
-	i = 0;
-	if (line_check == NULL || line_check[0] == '\0')
-		return (0);
-	while (line_check[i])
-	{
-		if (line_check[i] == '\n')
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-int	ft_read_buffer(int fd, char *buf)
-{
-	int	result_read;
-
-	if (buf == NULL)
-		return (0);
-	result_read = read(fd, buf, BUFFER_SIZE);
-	// printf("'%s'", buf);
-	if (result_read == -1)
-	{
-		free(buf);
-		return (0);
-	}
-	return (result_read);
-}
 char	*ft_hold_line(char *hold_line)
 {
 	int		i;
@@ -57,11 +20,13 @@ char	*ft_hold_line(char *hold_line)
 
 	i = 0;
 	j = 0;
-	if (hold_line == NULL)
+	if (hold_line == NULL || !(*hold_line))
 		return (NULL);
 	while (hold_line[i] && hold_line[i] != '\n')
 		i++;
 	final_line = ft_calloc(i + 2);
+	if (!final_line)
+		return (free(final_line), NULL);
 	i = 0;
 	while (hold_line[i] && hold_line[i] != '\n')
 		final_line[j++] = hold_line[i++];
@@ -71,7 +36,7 @@ char	*ft_hold_line(char *hold_line)
 	return (final_line);
 }
 
-char	*new_line(char *line)
+char	*after_line(char *line)
 {
 	int		i;
 	int		j;
@@ -94,23 +59,39 @@ char	*new_line(char *line)
 	return (str);
 }
 
+int	ft_read(char *buf, int fd, int *result_read)
+{
+	*result_read = read(fd, buf, BUFFER_SIZE);
+	if (*result_read == -1)
+		return (free(buf), buf = NULL, 0);
+	buf[*result_read] = '\0';
+	return (*result_read);
+}
+
 char	*get_next_line(int fd)
 {
 	static char	*hold_line;
 	char		*buf;
-	char		*check_hold_line;
+	char		*final_line;
+	int			result_read;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (NULL);
-	while (ft_check(hold_line) == 0)
+	if (fd < 0 || read(fd, 0, 0) == -1 || BUFFER_SIZE <= 0)
 	{
-		buf = ft_calloc(BUFFER_SIZE + 1);
-		if (ft_read_buffer(fd, buf) <= 0)
-			break ;
-		hold_line = ft_strjoin(hold_line, buf);
-		free(buf);
+		free(hold_line);
+		hold_line = NULL;
+		return (NULL);
 	}
-	check_hold_line = ft_hold_line(hold_line);
-	hold_line = new_line(hold_line);
-	return (check_hold_line);
+	result_read = 1;
+	buf = ft_calloc(BUFFER_SIZE + 1);
+	if (!buf)
+		return (NULL);
+	while (ft_check(hold_line) == 0 && result_read > 0)
+	{
+		result_read = ft_read(buf, fd, &result_read);
+		hold_line = ft_strjoin(hold_line, buf);
+	}
+	free(buf);
+	final_line = ft_hold_line(hold_line);
+	hold_line = after_line(hold_line);
+	return (final_line);
 }
