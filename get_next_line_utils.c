@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-mora <reduno96@gmail.com>              +#+  +:+       +#+        */
+/*   By: rel-mora <rel-mora@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/08 16:20:24 by rel-mora          #+#    #+#             */
-/*   Updated: 2024/03/09 12:56:58 by rel-mora         ###   ########.fr       */
+/*   Created: 2024/03/10 16:30:53 by rel-mora          #+#    #+#             */
+/*   Updated: 2024/03/10 18:31:45 by rel-mora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,12 @@ char	*ft_strjoin(char *s1, char *s2)
 	j = 0;
 	if (!s1)
 	{
-		s1 = malloc(1);
+		s1 = ft_calloc(1);
 		s1[0] = '\0';
 	}
 	if (!s2 || !s1)
 		return (NULL);
-	str_final = malloc((ft_strlen(s1) + ft_strlen(s2)) + 1);
+	str_final = ft_calloc((ft_strlen(s1) + ft_strlen(s2)) + 1);
 	if (str_final == NULL)
 		return (NULL);
 	while (s1[j])

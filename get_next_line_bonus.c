@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-mora <reduno96@gmail.com>              +#+  +:+       +#+        */
+/*   By: rel-mora <rel-mora@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/08 16:17:57 by rel-mora          #+#    #+#             */
-/*   Updated: 2024/03/09 17:19:05 by rel-mora         ###   ########.fr       */
+/*   Created: 2024/03/10 16:30:09 by rel-mora          #+#    #+#             */
+/*   Updated: 2024/03/10 16:30:11 by rel-mora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,10 @@ char	*get_next_line(int fd)
 	char		*check_hold_line;
 	int			result_read;
 
-	if (fd < 0 || read(fd, 0, 0) == -1 || BUFFER_SIZE <= 0)
-	{
-		free(hold_line[fd]);
-		hold_line[fd] = NULL;
+	if (fd < 0)
 		return (NULL);
-	}
+	if (read(fd, 0, 0) < 0 || BUFFER_SIZE <= 0)
+		return (free(hold_line[fd]), hold_line[fd] = NULL, NULL);
 	result_read = 1;
 	buf = ft_calloc(BUFFER_SIZE + 1);
 	if (!buf)

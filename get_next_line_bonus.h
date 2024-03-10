@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.h                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-mora <reduno96@gmail.com>              +#+  +:+       +#+        */
+/*   By: rel-mora <rel-mora@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/08 19:39:59 by rel-mora          #+#    #+#             */
-/*   Updated: 2024/03/09 13:10:36 by rel-mora         ###   ########.fr       */
+/*   Created: 2024/03/10 16:29:47 by rel-mora          #+#    #+#             */
+/*   Updated: 2024/03/10 16:29:50 by rel-mora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 #  define BUFFER_SIZE 5
 # endif
 
-# include <fcntl.h>
 # include <limits.h>
 # include <stdlib.h>
 # include <unistd.h>
