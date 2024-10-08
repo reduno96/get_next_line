@@ -13,7 +13,7 @@ This project involves implementing a function called `get_next_line` in C, which
 - [How to Use](#how-to-use)
 - [Compilation](#compilation)
 - [Testing](#testing)
-- [License](#license)
+
 
 ## Goals
 
@@ -122,6 +122,6 @@ To test your implementation, you can create a simple text file and use your func
 
     ./get_next_line test.txt
 
-License
+
 
 This project is open-source and available under the MIT License.
