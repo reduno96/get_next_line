@@ -6,7 +6,7 @@
 /*   By: rel-mora <rel-mora@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:30:09 by rel-mora          #+#    #+#             */
-/*   Updated: 2024/03/10 16:30:11 by rel-mora         ###   ########.fr       */
+/*   Updated: 2024/03/12 17:11:38 by rel-mora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ char	*ft_rest_buf(char *hold_line)
 	return (str);
 }
 
-int	ft_read(char *buf, int fd, int *result_read)
+ssize_t	ft_read(char *buf, int fd, ssize_t *result_read)
 {
 	*result_read = read(fd, buf, BUFFER_SIZE);
 	if (*result_read == -1)
@@ -73,7 +73,7 @@ char	*get_next_line(int fd)
 	static char	*hold_line[1000];
 	char		*buf;
 	char		*check_hold_line;
-	int			result_read;
+	ssize_t		result_read;
 
 	if (fd < 0)
 		return (NULL);
